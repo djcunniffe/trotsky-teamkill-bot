@@ -1,5 +1,6 @@
 import os
 import uuid
+import json
 import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
@@ -9,10 +10,11 @@ from collections import Counter
 
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
 GOOGLE_SHEET = os.environ['GOOGLE_SHEET']
+GOOGLE_SECRET = os.environ['GOOGLE_SECRET']
 
 # use creds to create a client to interact with the Google Drive API
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+creds = ServiceAccountCredentials.from_json(json.load(GOOGLE_SECRET),scope)
 client = gspread.authorize(creds)
 
 # Find a workbook by name and open the first sheet
