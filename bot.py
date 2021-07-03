@@ -27,7 +27,7 @@ async def on_ready():
 @bot.command()
 async def teamkill(ctx, teamkiller: discord.Member, teamkilled: discord.Member):
     await ctx.send(f'{teamkiller.mention} teamkilled {teamkilled.mention}')
-    row = [str(uuid.uuid4),teamkiller.id,teamkilled.id]
+    row = [str(uuid.uuid4()),teamkiller.id,teamkilled.id]
     sheet.insert_row(row,2)
 
 bot.run(DISCORD_TOKEN)
