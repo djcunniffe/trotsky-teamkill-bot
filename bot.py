@@ -8,6 +8,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from collections import Counter
 
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
+GOOGLE_SHEET = os.environ['GOOGLE_SHEET']
 
 # use creds to create a client to interact with the Google Drive API
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
@@ -16,7 +17,7 @@ client = gspread.authorize(creds)
 
 # Find a workbook by name and open the first sheet
 # Make sure you use the right name here.
-sheet = client.open("Trotsky Development").sheet1
+sheet = client.open(GOOGLE_SHEET).sheet1
 
 intents = discord.Intents.default()
 intents.members = True
@@ -43,7 +44,7 @@ async def wallofshame(ctx):
     for key in stats:
         user = bot.get_user(id=int(key))
         kills = stats[key]
-        
+
         await ctx.send(f'{user.name} has {kills} teamkill(s)')
 
 bot.run(DISCORD_TOKEN)
