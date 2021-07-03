@@ -10,7 +10,6 @@ from collections import Counter
 
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
 GOOGLE_SHEET = os.environ['GOOGLE_SHEET']
-GOOGLE_SECRET = os.environ['GOOGLE_SECRET']
 
 # use creds to create a client to interact with the Google Drive API
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
