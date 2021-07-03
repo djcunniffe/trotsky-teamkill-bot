@@ -14,7 +14,7 @@ GOOGLE_SECRET = os.environ['GOOGLE_SECRET']
 
 # use creds to create a client to interact with the Google Drive API
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json(json.loads(GOOGLE_SECRET),scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name('google-credentials.json', scope)
 client = gspread.authorize(creds)
 
 # Find a workbook by name and open the first sheet
