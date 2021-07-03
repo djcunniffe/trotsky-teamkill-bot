@@ -16,7 +16,6 @@ creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', s
 client = gspread.authorize(creds)
 
 # Find a workbook by name and open the first sheet
-# Make sure you use the right name here.
 sheet = client.open(GOOGLE_SHEET).sheet1
 
 intents = discord.Intents.default()
@@ -29,6 +28,10 @@ async def on_ready():
 
 @bot.command()
 async def teamkill(ctx, teamkiller: discord.Member, teamkilled: discord.Member):
+    """
+    Allow a user to add a teamkill entry to the database
+    Format: !teamkill @teamkiller @teamkilled
+    """
     await ctx.channel.purge(limit=1)
     await ctx.send(f'{teamkiller.mention} teamkilled {teamkilled.mention}')
     row = [str(uuid.uuid4()),str(teamkiller.id),str(teamkilled.id)]
@@ -36,6 +39,9 @@ async def teamkill(ctx, teamkiller: discord.Member, teamkilled: discord.Member):
 
 @bot.command()
 async def wallofshame(ctx):
+    """
+    Display a list of all teamkillers and the number of teamkills
+    """
     await ctx.channel.purge(limit=1)
     records = sheet.get_all_records()
     
