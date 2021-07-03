@@ -5,7 +5,7 @@ from discord.ext import commands
 from discord_slash import SlashCommand
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
+from collections import Counter
 
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
 
@@ -18,7 +18,9 @@ client = gspread.authorize(creds)
 # Make sure you use the right name here.
 sheet = client.open("Trotsky Development").sheet1
 
-bot = commands.Bot(command_prefix= '!')
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix= '!', intents=intents)
 
 @bot.event
 async def on_ready():
@@ -26,8 +28,22 @@ async def on_ready():
 
 @bot.command()
 async def teamkill(ctx, teamkiller: discord.Member, teamkilled: discord.Member):
+    await ctx.channel.purge(limit=1)
     await ctx.send(f'{teamkiller.mention} teamkilled {teamkilled.mention}')
-    row = [str(uuid.uuid4()),teamkiller.id,teamkilled.id]
+    row = [str(uuid.uuid4()),str(teamkiller.id),str(teamkilled.id)]
     sheet.insert_row(row,2)
+
+@bot.command()
+async def wallofshame(ctx):
+    await ctx.channel.purge(limit=1)
+    records = sheet.get_all_records()
+    
+    stats = dict(Counter(record['teamkiller'] for record in records))
+
+    for key in stats:
+        user = bot.get_user(id=int(key))
+        kills = stats[key]
+        
+        await ctx.send(f'{user.name} has {kills} teamkill(s)')
 
 bot.run(DISCORD_TOKEN)
