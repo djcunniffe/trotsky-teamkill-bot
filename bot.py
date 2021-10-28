@@ -52,6 +52,6 @@ async def wallofshame(ctx):
         user = bot.get_user(id=int(key))
         kills = stats[key]
 
-        await ctx.send(f'{user.name} has {kills} teamkill(s)')
+        await ctx.send(f'{user.display_name} has {kills} teamkill(s)')
 
 bot.run(DISCORD_TOKEN)
